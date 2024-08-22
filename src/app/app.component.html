@@ -1,0 +1,56 @@
+<div>
+  <ng-container
+    *ngTemplateOutlet="callList; context: { status: status$ | async }"
+  >
+  </ng-container>
+  <ng-template #callList let-status="status">
+    <ng-container [ngSwitch]="status">
+      <ng-container *ngSwitchCase="VoipStatus.INITIAL">
+        <!-- <button (click)="start()">start</button> -->
+      </ng-container>
+
+      <ng-container *ngSwitchCase="VoipStatus.INITIALIZING">
+        <button mat-button disabled>Initializing...</button>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="VoipStatus.INITIALIZED">
+        <button (click)="start()">VOIP client is disconected</button>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="VoipStatus.DISCONNECTING">
+        <button mat-button disabled>Disconnecting...</button>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="VoipStatus.DISCONNECTED">
+        <button (click)="start()">Connect</button>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="VoipStatus.CONNECTING">
+        <button mat-button disabled>Connecting...</button>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="VoipStatus.CONNECTED">
+        <button (click)="start()">Register</button>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="VoipStatus.UNREGISTERED">
+        <button (click)="start()">Register</button>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="VoipStatus.REGISTERED">
+        <div *ngFor="let session of managedSessions; let i = index">
+          <button (click)="onAnswerCall(i)">
+            <fa-icon [icon]="faPhone"></fa-icon>
+          </button>
+          <button (click)="onHoldCall(i)">
+            <fa-icon [icon]="faPause"></fa-icon>
+          </button>
+          <button (click)="onTerminateCall(i)">
+            <fa-icon [icon]="faPhoneSlash"></fa-icon>
+          </button>
+        </div>
+        <p>Incoming calls...</p>
+      </ng-container>
+    </ng-container>
+  </ng-template>
+</div>
